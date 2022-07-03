@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Monitor testPage</title>
+  <style>
+    button{
+      width: auto;
+      height: 40px;
+      font-size: 14px;
+      line-height: 40px;
+      outline: none;
+      border: 0;
+      background: #3973ff;
+      color: #fff;
+    }
+  </style>
+  <link rel="stylesheet" href="./rrweb-player.css"/>
+</head>
+<body>
+  <h1>Monitor testPage</h1>
+
+  <!-- ajax请求错误 -->
+  <p>ajax请求错误</p>
+  <button class="err-fetch">fetch</button>
+  <button class="err-ajax-request">ajax请求错误</button>
+  <button class="servererr-ajax-request">服务端错误</button>
+  <button class="fail-ajax-request">ajax失败</button>
+  <button class="timeout-ajax-request">ajax超时</button>
+  <button>jsonp请求失败</button>
+  <hr>
+
+  <!-- js执行错误 -->
+  <p>js执行错误</p>
+  <button class="js-running-error">js执行错误</button>
+  <hr>
+
+  <!-- Promise 错误 -->
+  <p>Promise 错误</p>
+  <button class="promise-error">Promise 错误</button>
+  <hr>
+
+  <!-- js内存泄漏 -->
+  <!-- <p>js内存泄漏</p>
+  <button>js内存泄漏</button>
+  <hr> -->
+
+  <!-- 资源没有加载 -->
+  <p>资源没有加载</p>
+  <button class="err-js-load">没有加载javascript</button>
+  <button class="err-css-load">没有加载css</button>
+  <button class="err-image-load">没有加载image</button>
+  <button class="err-iframe-load">没有加载iframe</button>
+  <hr>
+
+  <!-- 慢请求 -->
+  <p>慢请求</p>
+  <button class="err-slow-resourse">慢资源加载</button>
+  <button class="err-slow-ajax">慢API</button>
+  <hr>
+
+  <!-- 第三方资源错误 -->
+  <p>第三方资源错误</p>
+  <button class="other-resource-error">第三方资源错误</button>
+  <hr>
+
+  <!-- destory -->
+  <p>销毁实例</p>
+  <button class="destory">销毁实例</button>
+  <hr>
+
+
+  <!-- rrweb 重播 -->
+  <p>rrweb 重播</p>
+  <button class="rrweb">rrweb 重播</button>
+  <hr>
+
+  <!-- 主动上报 -->
+  <p>主动上报</p>
+  <button class="report">主动上报</button>
+  <hr>
+
+  <div>
+    <div>
+      <p></p>
+    </div>
+  </div>
+
+  <script src="./rrweb.js"></script>
+  <script src="./rrweb-player.js"></script>
+  <!-- 注意这里必须加 crossorigin="anonymous" 否则在引入的时候会因为是第三方资源无法收集完整报错信息 -->
+  <script crossorigin="anonymous" src="../lib/eagle-eye.js"></script>
+  <script src="./createError.js"></script>
+  <script>
+    var config = {
+      // name: 'test',
+      https: false,
+      // url: "http://172.18.153.86:7001/report",
+      url: "http://localhost:7001/api/report",
+      record: true,
+      // app_key: "830c4b26ab494a9f9231c3",
+      app_key: "b7e1cd8c571170d18d4e14",
+      autoSendPv: true,
+      sendResource: false,
+      startTime: new Date().getTime(),
+      globalClick: true,
+      openHeartbeat: true,
+      slowAjaxCost: 700,
+    };
+
+    window.monitor = eagleEye.initMonitor(config);
+
+    window.onerror = function(err, detail) {
+      // console.log(111);
+    }
+
+  </script>
+
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rrweb-player@latest/dist/style.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/rrweb-player@latest/dist/index.js"></script> -->
+  <script>
+    /**
+     * rrweb 回播
+     */
+    var rrwebButton = document.getElementsByClassName("rrweb")[0];
+    rrwebButton.onclick = function () {
+      var events = window.monitor.getRecord();
+      new rrwebPlayer({
+        target: document.body,
+        props: { events },
+      });
+    }
+  </script>
+</body>
+</html>
