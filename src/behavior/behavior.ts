@@ -13,10 +13,20 @@ export const initListenHash = (config: IConfig) => {
       return;
     }
     lastHref = getPageUrl();
-    report('pv', {
-      type: "hashchange",
-      url: getPageUrl(),
+
+    config.eventCenter.setEvent({
+      type: "pv",
+      data: {
+        type: "hashchange",
+        url: getPageUrl(),
+      }
     }, config);
+
+    // ------ REMOVE ------
+    // report('pv', {
+    //   type: "hashchange",
+    //   url: getPageUrl(),
+    // }, config);
   }
 
   if ('pushState' in history) {
@@ -27,12 +37,24 @@ export const initListenHash = (config: IConfig) => {
         return;
       }
       lastHref = getPageUrl();
-      report('pv', {
-        type: "pushState",
-        url: lastHref,
-        title: title,
-        data: data,
+
+      config.eventCenter.setEvent({
+        type: "pv",
+        data: {
+          type: "pushState",
+          url: lastHref,
+          title: title,
+          data: data,
+        }
       }, config);
+
+      // ------ REMOVE ------
+      // report('pv', {
+      //   type: "pushState",
+      //   url: lastHref,
+      //   title: title,
+      //   data: data,
+      // }, config);
     }
   }
 
@@ -44,12 +66,23 @@ export const initListenHash = (config: IConfig) => {
         return;
       }
       lastHref = getPageUrl();
-      report('pv', {
-        type: "replaceState",
-        url: lastHref,
-        title: title,
-        data: data,
+
+      config.eventCenter.setEvent({
+        type: "pv",
+        data: {
+          type: "replaceState",
+          url: lastHref,
+          title: title,
+          data: data,
+        }
       }, config);
+      // ------ REMOVE ------
+      // report('pv', {
+      //   type: "replaceState",
+      //   url: lastHref,
+      //   title: title,
+      //   data: data,
+      // }, config);
     }
   }
   
@@ -58,10 +91,19 @@ export const initListenHash = (config: IConfig) => {
       return;
     }
     lastHref = getPageUrl();
-    report('pv', {
-      type: "popstate",
-      url: getPageUrl(),
+
+    config.eventCenter.setEvent({
+      type: "pv",
+      data: {
+        type: "popstate",
+        url: getPageUrl(),
+      }
     }, config);
+    // ------ REMOVE ------
+    // report('pv', {
+    //   type: "popstate",
+    //   url: getPageUrl(),
+    // }, config);
   }
   window.addEventListener('hashchange', hashChangeHandle)
   window.addEventListener('popstate', popStateEventHandle)
@@ -87,10 +129,18 @@ export const initListenHash = (config: IConfig) => {
     if (!target.id || !target.type) {
       return
     }
-    report('click', {
-      url: getPageUrl(true),
-      dom: target,
+    config.eventCenter.setEvent({
+      type: "click",
+      data: {
+        url: getPageUrl(true),
+        dom: target,
+      }
     }, config);
+    // ------ REMOVE ------
+    // report('click', {
+    //   url: getPageUrl(true),
+    //   dom: target,
+    // }, config);
   }
 
   document?.body?.addEventListener("click", clickEvent);

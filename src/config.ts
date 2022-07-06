@@ -8,7 +8,7 @@
  function newConfig(conf: IUserConfig): IConfig {
    let config = {
      https: true,
-     url: "/api/report",
+     url: "https://dev-ones.cn/api/report",
      app_key: "",
      resourceUrl: [],
      resourceIndex: -1,
@@ -42,6 +42,8 @@
      slowAjaxCost: 700,
      // - 慢资源阈值 超过将会被记录 -
      slowResourceCost: 500,
+     // - 开发环境不会记录错误 -
+     silentDev: false,
      extend: (config: any, conf: IUserIncoming) => {
        Object.assign(config, conf);
        return config;

@@ -3,7 +3,7 @@ import { isIE, getPageUrl } from '../../utils/index';
 import { report } from '../report/report';
 
 /**
- * 首屏时间
+ * ---- 首屏时间 ----
  * @returns score { number }
  */
 export const initListenFCP = (config: IConfig) => {
@@ -166,6 +166,11 @@ export const initListenFCP = (config: IConfig) => {
   }
 };
 
+/**
+ * ---- 获取 Performance 性能数据 ----
+ * @param config 
+ * @returns 
+ */
 export const getPerformance = (config: IConfig) => {
   let data: any = {};
   // --- performance.timing - For SSR ---

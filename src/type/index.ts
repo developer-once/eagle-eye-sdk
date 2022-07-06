@@ -1,10 +1,12 @@
 
 export interface IEventCenter {
+  event: Array<any>;
   data: Array<any>;
   record: Array<any>;
   readonly get: () => Array<any>;
   readonly getRecord: () => Array<any>;
   readonly set: (data: any) => void;
+  readonly setEvent: (data: any, config: IConfig) => void;
   readonly setRecord: (data: any) => void;
   readonly setCheckout: () => void;
   readonly clearRecord: () => void;

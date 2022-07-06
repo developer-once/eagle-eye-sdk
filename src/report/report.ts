@@ -20,6 +20,7 @@ export const ajax = function (url: any, data: any, timeout?: any) {
         if (!xhr?.responseText || typeof xhr?.responseText !== 'string') {
           return
         }
+        // -------------- 接受服务端开启报错监控数据 --------------
         try {
           var result = JSON?.parse(xhr?.responseText || "{}");
           if (result.code === 200 && result.serverOpenRecord) {
