@@ -3,77 +3,7 @@ import { generateUUID, getPageUrl } from '../utils/index';
 import { ajax } from './report/report';
 import { getPerformance } from './performance/performance';
 
-const getIp = (onNewIP: any) => {
-  var myPeerConnection =
-    window?.RTCPeerConnection ||
-    window?.mozRTCPeerConnection ||
-    window?.webkitRTCPeerConnection;
-  var pc = new myPeerConnection({
-    iceServers: [
-      {
-        urls: "stun:stun01.sipphone.com",
-      },
-      {
-        urls: "stun:stun.ekiga.net",
-      },
-      {
-        urls: "stun:stun.fwdnet.net",
-      },
-      {
-        urls: "stun:stun.l.google.com:19302",
-      },
-      {
-        urls: "stun:stun.l.google.com:19302",
-      },
-      {
-        urls: "stun:stun.l.google.com:19302",
-      },
-    ],
-  }),
-    noop = function () { },
-    localIPs = {},
-    ipRegex =
-      /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g;
-
-  function iterateIP(ip: any) {
-    // @ts-ignore
-    if (!localIPs[ip]) {
-      onNewIP(ip);
-    }
-    // @ts-ignore
-    localIPs[ip] = true;
-    pc.close();
-  }
-
-  //create a bogus data channel
-  pc.createDataChannel("");
-
-  // create offer and set local description
-  pc.createOffer()
-    .then(function (sdp: any) {
-      sdp.sdp.split("\n").forEach(function (line: any) {
-        if (line.indexOf("candidate") < 0) return;
-        line.match(ipRegex).forEach(iterateIP);
-      });
-      pc.setLocalDescription(sdp, noop, noop);
-    })
-    .catch(function (reason) {
-      // An error occurred, so handle the failure to connect
-    });
-
-  // listen for candidate events
-  pc.onicecandidate = function (ice: any) {
-    if (
-      !ice ||
-      !ice.candidate ||
-      !ice.candidate.candidate ||
-      !ice.candidate.candidate.match(ipRegex)
-    )
-      return;
-    ice.candidate.candidate.match(ipRegex).forEach(iterateIP);
-  };
-}
-
+// ----- 获取 uuid -----
 export const getUuid = () => {
   let uuid = localStorage.getItem("eagle-uuid") || generateUUID();
 
@@ -84,6 +14,7 @@ export const getUuid = () => {
   return uuid;
 }
 
+// ----- 获取浏览器信息 -----
 export const geWrap = (config: IConfig) => {
   let data: any = {};
   let navigator = window.navigator;
@@ -129,11 +60,9 @@ export const geWrap = (config: IConfig) => {
   return data;
 };
 
+// ----- 获取错误信息 -----
 export const getErrorMessage = (error: any, config: IConfig, resource?: boolean) => {
   let data = geWrap(config);
-  getIp(function (ip: any) {
-    data.ip = ip;
-  });
   data.detail = {};
   data.detail = {
     ...error.detail
@@ -185,11 +114,11 @@ export const getErrorMessage = (error: any, config: IConfig, resource?: boolean)
   return data;
 };
 
+
+// ----- 获取错误信息 -----
 export const getEventMessage = (type: string, eventData: any, config: IConfig) => {
   let data = geWrap(config);
-  getIp((ip: any) => {
-    data.ip = ip;
-  });
+
   // --------- PV || UV ---------
   if (type === 'uv' || type === 'pv') {
     data.view = {};
@@ -217,14 +146,14 @@ export const getEventMessage = (type: string, eventData: any, config: IConfig) =
   return data;
 };
 
-// js 抛出的错误
+// ----- js 抛出的错误 -----
 export const reportError = function(err: any, config: any) {
   let data = getErrorMessage(err, config, false);
   data.record = config.eventCenter.getRecord();
   ajax(config.url, data);
 }
 
-// 资源加载错误
+// ----- 资源加载错误 -----
 export const reportResourceError = function (err: any, config: any) {
   let data = getErrorMessage(err, config, true);
   ajax(config.url, data);

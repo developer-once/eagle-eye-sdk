@@ -1,11 +1,13 @@
 /**
  * --- 事件中心 ---
  */
+import { getEventMessage } from "../wrap";
 import { IEventCenter, IConfig } from "../type/index";
 import { report } from '../report/report';
 
 const eventCenter = function (): IEventCenter {
   let event: IEventCenter = {
+    sending: true,
     event: [],
     data: [],
     record: [
@@ -23,12 +25,18 @@ const eventCenter = function (): IEventCenter {
     setEvent: function (event: any, config: IConfig) {
       this.data.push(event);
 
-      if (this.data.length >= 5) {
-        this.data.map((item: any) => {
-          report(item.type, item.data, config);
-        });
-        this.data.splice(0, this.data?.length);
+      // ----- 条数大于预设值时发送事件 -----
+      if (this.data.length >= config.behaviorMax && !this.sending) {
+        this.sending = true;
+        this.reportEvent(config);
       }
+    },
+    reportEvent: function (config: IConfig) {
+      this.data.map((item: any) => {
+        report(item.type, item.data, config);
+      });
+      this.data.splice(0, this.data?.length);
+      this.sending = false;
     },
     getRecord: function () {
       const len = this.record.length;

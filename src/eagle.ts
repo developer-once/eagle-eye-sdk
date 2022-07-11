@@ -30,6 +30,9 @@ const eagle = function (config: IConfig) {
     report: function (type: string, eventData: any = {}) {
       return report(type, eventData, this.config);
     },
+    // ---- 主动上报错误 ----
+    // ---- 重新设置 Config ----
+    setConfig: function () {},
     // ---- 计时开始 ----
     start: function () {
       this.config.beginTiming = new Date().getTime();

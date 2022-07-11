@@ -1,5 +1,6 @@
 
 export interface IEventCenter {
+  sending: boolean;
   event: Array<any>;
   data: Array<any>;
   record: Array<any>;
@@ -7,6 +8,7 @@ export interface IEventCenter {
   readonly getRecord: () => Array<any>;
   readonly set: (data: any) => void;
   readonly setEvent: (data: any, config: IConfig) => void;
+  readonly reportEvent: (config: IConfig) => void;
   readonly setRecord: (data: any) => void;
   readonly setCheckout: () => void;
   readonly clearRecord: () => void;

@@ -50,7 +50,12 @@ export const ajax = function (url: any, data: any, timeout?: any) {
   // xhr.onreadystatechange = function () {};
   xhr.send(window.JSON.stringify(data));
 }
-
+/**
+ * ---- 数据上报 ----
+ * @param type 
+ * @param eventData 
+ * @param config 
+ */
 export const report = (type: string, eventData: any, config?: any) => {
   let data = getEventMessage(type, eventData, config);
   ajax(config.url, data, function() {

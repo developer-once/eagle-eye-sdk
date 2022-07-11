@@ -2,7 +2,7 @@
  * -- 开启心跳检测 --
  * @param { Object } config
  */
- const initHeartbeat = (config: any) => {
+const initHeartbeat = (config: any) => {
   // -- 如果浏览器支持 serviceWorker --
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register(`service-worker.js?appKey=${config.app_key}`, {

@@ -14,19 +14,19 @@ export const initListenHash = (config: IConfig) => {
     }
     lastHref = getPageUrl();
 
-    config.eventCenter.setEvent({
-      type: "pv",
-      data: {
-        type: "hashchange",
-        url: getPageUrl(),
-      }
-    }, config);
-
     // ------ REMOVE ------
-    // report('pv', {
-    //   type: "hashchange",
-    //   url: getPageUrl(),
+    // config.eventCenter.setEvent({
+    //   type: "pv",
+    //   data: {
+    //     type: "hashchange",
+    //     url: getPageUrl(),
+    //   }
     // }, config);
+
+    report('pv', {
+      type: "hashchange",
+      url: getPageUrl(),
+    }, config);
   }
 
   if ('pushState' in history) {
@@ -38,23 +38,23 @@ export const initListenHash = (config: IConfig) => {
       }
       lastHref = getPageUrl();
 
-      config.eventCenter.setEvent({
-        type: "pv",
-        data: {
-          type: "pushState",
-          url: lastHref,
-          title: title,
-          data: data,
-        }
-      }, config);
-
       // ------ REMOVE ------
-      // report('pv', {
-      //   type: "pushState",
-      //   url: lastHref,
-      //   title: title,
-      //   data: data,
+      // config.eventCenter.setEvent({
+      //   type: "pv",
+      //   data: {
+      //     type: "pushState",
+      //     url: lastHref,
+      //     title: title,
+      //     data: data,
+      //   }
       // }, config);
+
+      report('pv', {
+        type: "pushState",
+        url: lastHref,
+        title: title,
+        data: data,
+      }, config);
     }
   }
 
@@ -67,22 +67,23 @@ export const initListenHash = (config: IConfig) => {
       }
       lastHref = getPageUrl();
 
-      config.eventCenter.setEvent({
-        type: "pv",
-        data: {
-          type: "replaceState",
-          url: lastHref,
-          title: title,
-          data: data,
-        }
-      }, config);
       // ------ REMOVE ------
-      // report('pv', {
-      //   type: "replaceState",
-      //   url: lastHref,
-      //   title: title,
-      //   data: data,
+      // config.eventCenter.setEvent({
+      //   type: "pv",
+      //   data: {
+      //     type: "replaceState",
+      //     url: lastHref,
+      //     title: title,
+      //     data: data,
+      //   }
       // }, config);
+      
+      report('pv', {
+        type: "replaceState",
+        url: lastHref,
+        title: title,
+        data: data,
+      }, config);
     }
   }
   
@@ -92,18 +93,19 @@ export const initListenHash = (config: IConfig) => {
     }
     lastHref = getPageUrl();
 
-    config.eventCenter.setEvent({
-      type: "pv",
-      data: {
-        type: "popstate",
-        url: getPageUrl(),
-      }
-    }, config);
     // ------ REMOVE ------
-    // report('pv', {
-    //   type: "popstate",
-    //   url: getPageUrl(),
+    // config.eventCenter.setEvent({
+    //   type: "pv",
+    //   data: {
+    //     type: "popstate",
+    //     url: getPageUrl(),
+    //   }
     // }, config);
+
+    report('pv', {
+      type: "popstate",
+      url: getPageUrl(),
+    }, config);
   }
   window.addEventListener('hashchange', hashChangeHandle)
   window.addEventListener('popstate', popStateEventHandle)
@@ -122,10 +124,10 @@ export const initListenHash = (config: IConfig) => {
  * 初始化监听 body 点击事件
  * @param { Object } config
  */
- export const initListenBody = (config: IConfig) => {
+export const initListenBody = (config: IConfig) => {
   // --- JS ---
   const clickEvent = function(event: any) {
-    let target: any = getDomUniqueId(event?.target);
+    const target: any = getDomUniqueId(event?.target);
     if (!target.id || !target.type) {
       return
     }
@@ -149,4 +151,24 @@ export const initListenHash = (config: IConfig) => {
     type: "clickEvent",
     func: clickEvent
   });
+};
+
+
+/**
+ * ---- 用户离开页面之前发送请求 ----
+ */
+export const sendBeaconBeforeLeave = (config: IConfig) => {
+  if ('sendBeacon' in navigator) {
+
+    const leaveEvent = function() {
+      navigator.sendBeacon('https://dev-ones.cn/api/report', '');
+    }
+
+    window.addEventListener('pagehide', leaveEvent, false);
+
+    config.eventCenter.set({
+      type: "leaveEvent",
+      func: leaveEvent
+    });
+  }
 };
