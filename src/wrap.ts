@@ -14,12 +14,19 @@ export const getUuid = () => {
   return uuid;
 }
 
-// ----- 获取浏览器信息 -----
-export const geWrap = (config: IConfig) => {
+// ----- 获取核心标识信息 -----
+export const getCoreMessage = () => {
   let data: any = {};
-  let navigator = window.navigator;
+  data.uuid = getUuid();
+  data.referrer = document?.referrer;
+  
+  return data;
+}
 
-  data.uuid = getUuid()
+// ----- 获取浏览器信息 -----
+export const getWrapper = (config: IConfig) => {
+  let data: any = getCoreMessage();
+  let navigator = window.navigator;
 
   // UA
   data.userAgent = navigator.userAgent;
@@ -50,9 +57,6 @@ export const geWrap = (config: IConfig) => {
   // time
   data.time = new Date().getTime();
 
-  // --- referrer
-  data.referrer = document?.referrer;
-
   let performance = getPerformance(config);
 
   Object.assign(data, performance);
@@ -62,7 +66,7 @@ export const geWrap = (config: IConfig) => {
 
 // ----- 获取错误信息 -----
 export const getErrorMessage = (error: any, config: IConfig, resource?: boolean) => {
-  let data = geWrap(config);
+  let data = getWrapper(config);
   data.detail = {};
   data.detail = {
     ...error.detail
@@ -115,9 +119,15 @@ export const getErrorMessage = (error: any, config: IConfig, resource?: boolean)
 };
 
 
-// ----- 获取错误信息 -----
+// ----- 获取事件信息 -----
 export const getEventMessage = (type: string, eventData: any, config: IConfig) => {
-  let data = geWrap(config);
+  
+  // --------- click 类型是单独的批量上报 ---------
+  if (type === "click") {
+    return getClickMessage(type, eventData, config);
+  }
+
+  let data = getWrapper(config);
 
   // --------- PV || UV ---------
   if (type === 'uv' || type === 'pv') {
@@ -127,14 +137,9 @@ export const getEventMessage = (type: string, eventData: any, config: IConfig) =
     }
   }
 
-  // --------- fetchError ajaxLoad ---------
-  if (type === "click") {
-    data.click = {};
-    data.click = {
-      ...eventData
-    }
-  }
+  
 
+  // ---- 自定义上报类型 ----
   data.detail = {
     ...eventData
   };
@@ -145,6 +150,26 @@ export const getEventMessage = (type: string, eventData: any, config: IConfig) =
   
   return data;
 };
+
+// ----- 获取点击事件信息 ----
+export const getClickMessage = (type: string, data: any, config: IConfig) => {
+  let wrap = getCoreMessage();
+  let array: any = [];
+  data.map((item: any) => {
+    array.push({
+      click: item,
+      event_type: type,
+      app_key: config.app_key,
+      ...wrap,
+    })
+    // return 
+  });
+  
+  return {
+    event_type: type,
+    data: array,
+  };
+}
 
 // ----- js 抛出的错误 -----
 export const reportError = function(err: any, config: any) {

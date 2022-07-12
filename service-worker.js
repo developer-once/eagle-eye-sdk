@@ -13,10 +13,9 @@ function checkCrash() {
     let page = pages[id];
     if ((now - page.t) > CRASH_THRESHOLD) {
       // 上报 crash
-      console.log("++++++++++页面发生崩溃+++++++++++++++", self);
       const location = self.location;
       const app_key = location.search.split("appKey=")[1] || "";
-      fetch("http://localhost:7001/report/crash", {
+      fetch("https://dev-ones.cn/api/report/crash", {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -26,9 +25,7 @@ function checkCrash() {
           app_key: app_key,
           origin: location.origin,
         }),
-      }).then((res) => {
-        console.log("++++++++", res);
-      })
+      }).then((res) => {})
       delete pages[id];
     }
   }

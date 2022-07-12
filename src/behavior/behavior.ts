@@ -1,6 +1,7 @@
 import { IConfig } from '../type/index';
 import { report } from '../report/report';
 import { getDomUniqueId, getPageUrl } from '../../utils/index';
+import { getEventMessage } from "../wrap";
 
 // --- 用户行为检测 ---
 
@@ -133,10 +134,8 @@ export const initListenBody = (config: IConfig) => {
     }
     config.eventCenter.setEvent({
       type: "click",
-      data: {
-        url: getPageUrl(true),
-        dom: target,
-      }
+      url: getPageUrl(true),
+      dom: target,
     }, config);
     // ------ REMOVE ------
     // report('click', {
@@ -161,7 +160,8 @@ export const sendBeaconBeforeLeave = (config: IConfig) => {
   if ('sendBeacon' in navigator) {
 
     const leaveEvent = function() {
-      navigator.sendBeacon('https://dev-ones.cn/api/report', '');
+      let data = getEventMessage("click", config.eventData.data, config);
+      navigator.sendBeacon('https://dev-ones.cn/api/report', JSON.stringify(data));
     }
 
     window.addEventListener('pagehide', leaveEvent, false);

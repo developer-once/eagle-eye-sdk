@@ -1,5 +1,11 @@
 import { getEventMessage } from "../wrap";
 
+/**
+ * ---- Ajax 请求 ----
+ * @param url 
+ * @param data 
+ * @param timeout 
+ */
 /* eslint-disable */
 export const ajax = function (url: any, data: any, timeout?: any) {
   var xhr = new XMLHttpRequest();
@@ -50,6 +56,8 @@ export const ajax = function (url: any, data: any, timeout?: any) {
   // xhr.onreadystatechange = function () {};
   xhr.send(window.JSON.stringify(data));
 }
+
+
 /**
  * ---- 数据上报 ----
  * @param type 
