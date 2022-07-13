@@ -1,6 +1,6 @@
 import { IConfig } from './type/index';
-import { generateUUID, getPageUrl } from '../utils/index';
 import { ajax } from './report/report';
+import { generateUUID, getPageUrl } from '../utils/index';
 import { getPerformance } from './performance/performance';
 
 // ----- 获取 uuid -----
@@ -117,7 +117,6 @@ export const getErrorMessage = (error: any, config: IConfig, resource?: boolean)
 
   return data;
 };
-
 
 // ----- 获取事件信息 -----
 export const getEventMessage = (type: string, eventData: any, config: IConfig) => {

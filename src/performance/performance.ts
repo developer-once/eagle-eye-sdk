@@ -208,7 +208,7 @@ export const getPerformance = (config: IConfig) => {
         event_type: "slow",
       }
       /**
-       * --- 请求类型
+       * --- 请求类型 ---
        * - link script img css other
        * - fetch xmlhttprequest
        */

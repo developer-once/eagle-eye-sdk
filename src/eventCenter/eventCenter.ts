@@ -8,14 +8,12 @@ import { report } from '../report/report';
 const eventCenter = function (): IEventCenter {
   let event: IEventCenter = {
     sending: false,
+    // -- event ---
     event: [],
+    // -- eventListener --
     data: [],
-    record: [
-      [],
-      [],
-    ],
-    // ---- report wait list ----
-    // reportList: [],
+    // -- rrweb --
+    record: [ [], [] ],
     get: function () {
       return this.data
     },
@@ -37,8 +35,8 @@ const eventCenter = function (): IEventCenter {
       this.sending = false;
     },
     getRecord: function () {
-      const len = this.record.length;
-      const events = this.record[len - 2].concat(this.record[len - 1]);
+      const length = this.record.length;
+      const events = this.record[length - 2].concat(this.record[length - 1]);
       return events;
     },
     setRecord: function (event: any) {

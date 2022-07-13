@@ -66,7 +66,6 @@ export const ajax = function (url: any, data: any, timeout?: any) {
  */
 export const report = (type: string, eventData: any, config?: any) => {
   let data = getEventMessage(type, eventData, config);
-  ajax(config.url, data, function() {
-    config._clearEvent();
-  });
+  
+  ajax(config.url, data);
 };

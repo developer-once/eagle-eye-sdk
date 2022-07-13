@@ -15,15 +15,6 @@ export const initListenHash = (config: IConfig) => {
     }
     lastHref = getPageUrl();
 
-    // ------ REMOVE ------
-    // config.eventCenter.setEvent({
-    //   type: "pv",
-    //   data: {
-    //     type: "hashchange",
-    //     url: getPageUrl(),
-    //   }
-    // }, config);
-
     report('pv', {
       type: "hashchange",
       url: getPageUrl(),
@@ -38,17 +29,6 @@ export const initListenHash = (config: IConfig) => {
         return;
       }
       lastHref = getPageUrl();
-
-      // ------ REMOVE ------
-      // config.eventCenter.setEvent({
-      //   type: "pv",
-      //   data: {
-      //     type: "pushState",
-      //     url: lastHref,
-      //     title: title,
-      //     data: data,
-      //   }
-      // }, config);
 
       report('pv', {
         type: "pushState",
@@ -67,17 +47,6 @@ export const initListenHash = (config: IConfig) => {
         return;
       }
       lastHref = getPageUrl();
-
-      // ------ REMOVE ------
-      // config.eventCenter.setEvent({
-      //   type: "pv",
-      //   data: {
-      //     type: "replaceState",
-      //     url: lastHref,
-      //     title: title,
-      //     data: data,
-      //   }
-      // }, config);
       
       report('pv', {
         type: "replaceState",
@@ -93,15 +62,6 @@ export const initListenHash = (config: IConfig) => {
       return;
     }
     lastHref = getPageUrl();
-
-    // ------ REMOVE ------
-    // config.eventCenter.setEvent({
-    //   type: "pv",
-    //   data: {
-    //     type: "popstate",
-    //     url: getPageUrl(),
-    //   }
-    // }, config);
 
     report('pv', {
       type: "popstate",
@@ -137,11 +97,6 @@ export const initListenBody = (config: IConfig) => {
       url: getPageUrl(true),
       dom: target,
     }, config);
-    // ------ REMOVE ------
-    // report('click', {
-    //   url: getPageUrl(true),
-    //   dom: target,
-    // }, config);
   }
 
   document?.body?.addEventListener("click", clickEvent);

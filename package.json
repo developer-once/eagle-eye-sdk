@@ -1,5 +1,5 @@
 {
-  "name": "eagle-eye-sdk",
+  "name": "@developer-ones/eagle-eye-sdk",
   "version": "1.0.0",
   "description": "Monitor SDK",
   "main": "./lib/eagle-eye.js",

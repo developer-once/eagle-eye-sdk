@@ -22,19 +22,19 @@
   };
   element.classList.forEach((item: any) => {
     // 过滤非法 class 名称
-    if(/^[a-zA-Z]/.test(item)) {
+    if (/^[a-zA-Z]/.test(item)) {
       className += "." + item;
     }
   });
   target.className = className;
 
-  if(target.tag === "body" || target.tag === "html") {
+  if (target.tag === "body" || target.tag === "html") {
     result.id = target.tag;
     result.type= target.tag;
   }
 
   // 如果有 ID 则返回 ID
-  if (target.id && document.getElementById(target.id) === element){
+  if (target.id && document.getElementById(target.id) === element) {
     const queryTag = target.tag + "#" + target.id;
     try {
       const queryResult = document.querySelector(queryTag);
@@ -44,23 +44,23 @@
     } catch (e) {
       return 
     }
-    result.type = "getElementById"
+    result.type = "getElementById";
   }
 
   // 如果没有 ID 但可以通过 Name 找到则返回
   if (!result.id && target.name && document.getElementsByName(target.name)[0] === element) {
     result.id = target.name;
-    result.type = "getElementsByName"
+    result.type = "getElementsByName";
   }
 
   // 如果没有 ID 但可以通过 className querySelector 找到
-  if(!result.id && className && document.querySelector(target.tag + className) === element) {
+  if (!result.id && className && document.querySelector(target.tag + className) === element) {
     result.id = target.tag + className;
-    result.type = "querySelector"
+    result.type = "querySelector";
   }
 
   // 单独处理 radio
-  if(!result.id && target.type === "radio") {
+  if (!result.id && target.type === "radio") {
     let value = element.value;
     let queryString = target.tag + "[value='" + value + "']";
     if (target.name) {
@@ -73,14 +73,14 @@
   }
 
   // 单独处理 a 标签
-  if(!result.id && target.tag === 'a') {
+  if (!result.id && target.tag === 'a') {
     let href = element.attributes.href?.value;
     if (href) {
       let queryString = "a[href='" + href + "']";
       let selectedEl = document.querySelector(queryString);
-      if(selectedEl===element){
-        result.id = queryString
-        result.type = "querySelector"
+      if(selectedEl===element) {
+        result.id = queryString;
+        result.type = "querySelector";
       }
     }
   }
@@ -92,7 +92,7 @@
     queryString = target.name ? queryString + "[name='" + target.name + "']" : queryString;
     if(document.querySelector(queryString) === element) {
       result.id = queryString;
-      result.type = "querySelector"
+      result.type = "querySelector";
     }
   }
 
@@ -113,8 +113,8 @@
       if (index) {
         queryString = queryString + ":nth-child(" + index + ")";
         if (document.querySelector(queryString) === element) {
-          result.id = queryString
-          result.type = "querySelector"
+          result.id = queryString;
+          result.type = "querySelector";
         }
       }
     }
@@ -162,7 +162,7 @@ export const generateUUID = () => {
  */
 export const getPageUrl = (noParam?: boolean) => {
   if (noParam) {
-    return window?.location?.href?.split("?")[0] || ""
+    return window?.location?.href?.split("?")[0] || "";
   }
   return window?.location?.href;
 };

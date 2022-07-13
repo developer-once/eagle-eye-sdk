@@ -7,8 +7,8 @@ import eventCenter from './eventCenter/eventCenter';
 import { initListenFCP } from './performance/performance';
 import { initListenHash, initListenBody, sendBeaconBeforeLeave } from './behavior/behavior';
 import {
-  initListenGlobalJsError,
   initListenPromise,
+  initListenGlobalJsError,
   initListenAjax,
   initListenFetch,
 } from './error/error';
