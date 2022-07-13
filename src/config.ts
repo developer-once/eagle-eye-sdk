@@ -8,7 +8,8 @@ import { IUserConfig, IConfig, IUserIncoming } from './type/index';
 function newConfig(conf: IUserConfig): IConfig {
   let config = {
     https: true,
-    url: "https://dev-ones.cn/api/report",
+    url: "https://dev-one.cn/api/report",
+    config: "https://dev-one.cn/api/get/config",
     app_key: "",
     resourceUrl: [],
     resourceIndex: -1,
@@ -18,8 +19,8 @@ function newConfig(conf: IUserConfig): IConfig {
     record: false,
     // - 是否开启全局点击 -
     globalClick: true,
-    // - 是否上报资源数据 -
-    sendResource: true,
+    // - 是否开启资源监控 -
+    recordReSoure: true,
     // - 禁用 AJAX 请求监听 -
     disableAjax: false,
     // - 禁用 fetch -

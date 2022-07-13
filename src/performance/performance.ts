@@ -190,7 +190,7 @@ export const getPerformance = (config: IConfig) => {
   // --- performance.getEntriesByType - For resource loading time ---
   data.resourceLoading = [];
   // --- 是否开启资源上报监控 ---
-  if (config.sendResource) {
+  if (config.recordReSoure) {
     performance?.getEntriesByType('resource')?.forEach((item: any, index: number) => {
       // 资源 url 已经被记录 且不是 ajax 请求, 之前出现过的 index 跳过 只使用最新的
       if (config.resourceUrl.indexOf(item.name) !== -1 && item.initiatorType !== 'xmlhttprequest' || index <= config.resourceIndex) {

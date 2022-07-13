@@ -3,6 +3,7 @@
  */
 import { IUserConfig, IConfig } from './type/index';
 import newConfig from './config';
+import { ajax } from './report/report';
 import eventCenter from './eventCenter/eventCenter';
 import { initListenFCP } from './performance/performance';
 import { initListenHash, initListenBody, sendBeaconBeforeLeave } from './behavior/behavior';
@@ -15,6 +16,12 @@ import {
 import initHeartbeat from './error/heartbeat';
 
 const initUserConfig = (userConfig: IUserConfig): IConfig => {
+
+  // ---- 如果已经初始化 window 上有对象则返回 ----
+  if (window.eagleEye) {
+    return window?.eagleEye?.config || userConfig;
+  }
+
   const config: IConfig = newConfig(userConfig);
   config.eventCenter = eventCenter();
 
@@ -65,6 +72,9 @@ const initUserConfig = (userConfig: IUserConfig): IConfig => {
       checkoutEveryNms: 5 * 1000,
     });
   }
+
+  // --- 获取 appk_key 配置 ---
+  ajax(config.config, {});
 
   // --- 离开页面之前发送请求 ----
   sendBeaconBeforeLeave(config);

@@ -58,7 +58,7 @@ export default App
 |  record           |  boolean   |      |  是否记录报错录制回放，由于上报回放 rrweb,请求庞大请在后台通过项目设置开启      |  false                |    |
 |  enableSPA        |  boolean   |      |  是否监听页面的 hashchange 事件并重新上报 PV，适用于单页面应用场景           |  true                 |    |
 |  autoSendPv       |  boolean   |      |  是否初始化后自动发送 PV，默认会自动发送                                   |  true                 |    |
-|  sendResource     |  boolean   |      |  是否上报资源数据，默认会                                                |  true                 |    |
+|  recordReSoure     |  boolean   |      |  是否上报资源数据，默认会                                                |  true                 |    |
 |  disableHook      |  boolean   |      |  是否禁用 AJAX 请求监听，默认会监听并用于 API 调用成功率上报                 |  false                |    |
 |  globalClick      |  boolean   |      |  是否监听全局点击事件                                                   |  false                 |    |
 |  disableAjax      |  boolean   |      |  是否禁止监听 Ajax                                                     |  false                 |    |

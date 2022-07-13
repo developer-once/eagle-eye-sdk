@@ -18,17 +18,18 @@ const initListenPromise = (config: IConfig) => {
 }
 
 /**
- * --- 监听全局的JS错误和资源加载错误 ---
+ * --- 监听全局的 JS 错误和资源加载错误 ---
  * @param recordReSoure 是否取消监听资源错误
  */
-const initListenGlobalJsError = (config: IConfig, recordReSoure?: Boolean) => {
+const initListenGlobalJsError = (config: IConfig) => {
   const globalEventHandlers = (e: ErrorEvent) => {
     const target = e.target as any;
     if (target != window) {
-      // 静态资源加载的error事件
+      if (!config.recordReSoure) { return }
+      // -- 静态资源加载的 error 事件 --
       reportResourceError(e, config);
     } else {
-      // 判断错误是否来自 eagle-eye 该方法仅能防止 script 方式引入的重复报错
+      // -- 判断错误是否来自 eagle-eye 该方法仅能防止 script 方式引入的重复报错 --
       if (e.filename.indexOf('eagle-eye') > -1) {
         return;
       }
@@ -88,6 +89,7 @@ const initListenAjax = (config: IConfig ,setHttpBody?: Boolean) => {
               const status = target.status;
               const statusText = target.statusText
               const response = target.response;
+              // ---- 请求报错 ----
               if (status !== 200) {
                 reportError({
                   type: "ajaxLoad",
@@ -101,6 +103,8 @@ const initListenAjax = (config: IConfig ,setHttpBody?: Boolean) => {
                   }
                 }, config);
               }
+
+              // ---- 慢请求 ----
               if (apiCost > (config.slowAjaxCost || 0)) {
                 reportError({
                   type: "ajaxSlow",
@@ -135,7 +139,9 @@ const initListenFetch = (config: IConfig) => {
       // @ts-ignore
       return _fetch.apply(this, arguments).then(
         response => {
-          const cloneResponse = response.clone()
+          const cloneResponse = response.clone();
+
+          // ---- fetch response 状态被修改 ----
           if(!cloneResponse.ok) {
             reportError({
               type: "fetchError",
@@ -152,6 +158,8 @@ const initListenFetch = (config: IConfig) => {
         }
       ).catch((err: any) => {
         try {
+
+          // ---- fetch error ----
           reportError({
             type: "fetchError",
             detail: {

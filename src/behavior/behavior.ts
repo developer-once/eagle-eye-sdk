@@ -9,6 +9,7 @@ let lastHref: string  | null | undefined;
 export const initListenHash = (config: IConfig) => {
   let originalPushState: (data: any, unused: string, url?: string | URL | null | undefined) => void
   let originalReplaceState:(data: any, unused: string, url?: string | URL | null | undefined) => void
+  // ---- hashchange ----
   const hashChangeHandle = () => {
     if (lastHref === getPageUrl()) {
       return;
@@ -21,6 +22,7 @@ export const initListenHash = (config: IConfig) => {
     }, config);
   }
 
+  // ---- pushState ----
   if ('pushState' in history) {
     originalPushState =  history.pushState
     history.pushState = function(data, title, url) {
@@ -57,6 +59,7 @@ export const initListenHash = (config: IConfig) => {
     }
   }
   
+  // ---- popstate ----
   const popStateEventHandle = (e: PopStateEvent) => {
     if (lastHref === getPageUrl()) {
       return;
@@ -116,7 +119,7 @@ export const sendBeaconBeforeLeave = (config: IConfig) => {
 
     const leaveEvent = function() {
       let data = getEventMessage("click", config.eventData.data, config);
-      navigator.sendBeacon('https://dev-ones.cn/api/report', JSON.stringify(data));
+      navigator.sendBeacon(config.url, JSON.stringify(data));
     }
 
     window.addEventListener('pagehide', leaveEvent, false);

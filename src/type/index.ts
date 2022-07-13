@@ -17,10 +17,11 @@ export interface IEventCenter {
 export type IUserConfig = {
   https: boolean;
   url: string;
+  config: string;
   app_key: string;
   record?: boolean;
   globalClick?: boolean;
-  sendResource?: boolean;
+  recordReSoure?: boolean;
   disableAjax?: boolean;
   disableFetch?: boolean;
   autoSendPv?: boolean;
