@@ -18,7 +18,7 @@ import initHeartbeat from './error/heartbeat';
 const initUserConfig = (userConfig: IUserConfig): IConfig => {
 
   // ---- 如果已经初始化 window 上有对象则返回 ----
-  if (window.eagleEye) {
+  if (window?.eagleEye?.config) {
     return window?.eagleEye?.config || userConfig;
   }
 

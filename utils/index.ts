@@ -3,7 +3,7 @@
  * @param { Any } element
  * @returns Object { id, type } String String
  */
- export const getDomUniqueId = (element: any) => {
+export const getDomUniqueId = (element: any) => {
   if (!element) {
     return {};
   }

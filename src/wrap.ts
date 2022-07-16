@@ -1,7 +1,10 @@
+// @ts-ignore
+import md5 from '../utils/md5';
 import { IConfig } from './type/index';
 import { ajax } from './report/report';
 import { generateUUID, getPageUrl } from '../utils/index';
 import { getPerformance } from './performance/performance';
+
 
 // ----- 获取 uuid -----
 export const getUuid = () => {
@@ -13,6 +16,11 @@ export const getUuid = () => {
 
   return uuid;
 }
+
+// ----- 获取错误指纹 -----
+export const getErrorFingerprint = (error: any) => {
+  return md5(`${error.filename}-${error.lineno}-${error.message}-${error.error?.stack}`);
+};
 
 // ----- 获取核心标识信息 -----
 export const getCoreMessage = () => {
@@ -83,6 +91,7 @@ export const getErrorMessage = (error: any, config: IConfig, resource?: boolean)
     data.error.message = error.message;
     data.error.line = error.lineno;
     data.error.filename = error.filename;
+    data.error.fingerprint = getErrorFingerprint(error);
     data.stack = error.stack;
   }
   // --------- Promise ---------
