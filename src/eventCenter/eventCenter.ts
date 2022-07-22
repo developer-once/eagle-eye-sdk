@@ -31,6 +31,7 @@ const eventCenter = function (): IEventCenter {
     },
     reportEvent: function (config: IConfig) {
       report("click", this.event, config);
+      
       this.data.splice(0, this.data?.length);
       this.sending = false;
     },

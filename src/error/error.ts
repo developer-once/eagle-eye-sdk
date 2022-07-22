@@ -5,11 +5,14 @@ import { reportError, reportResourceError } from '../wrap';
  * --- 监听全局 Promise 错误 ---
  */
 const initListenPromise = (config: IConfig) => {
-  // 当Promise 被 reject 且没有 reject 处理器的时候，会触发 unhandledrejection 事件；这可能发生在 window 下，但也可能发生在 Worker 中。
+  // -- 当Promise 被 reject 且没有 reject 处理器的时候，会触发 unhandledrejection 事件； --
+  // -- 这可能发生在 window 下，但也可能发生在 Worker 中。 --
   const unhandledrejection = function(err: PromiseRejectionEvent) {
     reportError(err, config);
   }
+
   window.addEventListener("unhandledrejection", unhandledrejection);
+
   // --- 挂载监听 ---
   config.eventCenter.set({
     type: "unhandledrejection",
@@ -24,6 +27,7 @@ const initListenPromise = (config: IConfig) => {
 const initListenGlobalJsError = (config: IConfig) => {
   const globalEventHandlers = (e: ErrorEvent) => {
     const target = e.target as any;
+    
     if (target != window) {
       if (!config.recordReSoure) { return }
       // -- 静态资源加载的 error 事件 --
@@ -36,7 +40,9 @@ const initListenGlobalJsError = (config: IConfig) => {
       reportError(e, config);
     }
   }
+
   window.addEventListener("error", globalEventHandlers, true);
+
   // --- 挂载监听 ---
   config.eventCenter.set({
     type: "error",
@@ -134,7 +140,7 @@ const initListenAjax = (config: IConfig ,setHttpBody?: Boolean) => {
  */
 const initListenFetch = (config: IConfig) => {
   if (window.fetch) {
-    let _fetch = fetch;
+    const _fetch = fetch;
     window.fetch = function (e: any, u: any) {
       // @ts-ignore
       return _fetch.apply(this, arguments).then(
@@ -142,7 +148,7 @@ const initListenFetch = (config: IConfig) => {
           const cloneResponse = response.clone();
 
           // ---- fetch response 状态被修改 ----
-          if(!cloneResponse.ok) {
+          if (!cloneResponse.ok) {
             reportError({
               type: "fetchError",
               detail: {
@@ -158,7 +164,6 @@ const initListenFetch = (config: IConfig) => {
         }
       ).catch((err: any) => {
         try {
-
           // ---- fetch error ----
           reportError({
             type: "fetchError",

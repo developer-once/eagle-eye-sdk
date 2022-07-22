@@ -15,6 +15,4 @@ const initMonitor = (userConfig: IUserConfig) => {
   return EagleEye;
 };
 
-export {
-  initMonitor
-}
+export default initMonitor;

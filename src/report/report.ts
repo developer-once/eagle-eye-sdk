@@ -57,7 +57,6 @@ export const ajax = function (url: any, data: any, timeout?: any) {
   xhr.send(window.JSON.stringify(data));
 }
 
-
 /**
  * ---- 数据上报 ----
  * @param type 

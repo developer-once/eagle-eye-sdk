@@ -5,13 +5,12 @@ import { ajax } from './report/report';
 import { generateUUID, getPageUrl } from '../utils/index';
 import { getPerformance } from './performance/performance';
 
-
 // ----- 获取 uuid -----
 export const getUuid = () => {
   let uuid = localStorage.getItem("eagle-uuid") || generateUUID();
 
   if (uuid) {
-    localStorage.setItem("eagle-uuid", uuid)
+    localStorage.setItem("eagle-uuid", uuid);
   }
 
   return uuid;
@@ -34,7 +33,7 @@ export const getCoreMessage = () => {
 // ----- 获取浏览器信息 -----
 export const getWrapper = (config: IConfig) => {
   let data: any = getCoreMessage();
-  let navigator = window.navigator;
+  const navigator = window.navigator;
 
   // UA
   data.userAgent = navigator.userAgent;
@@ -77,7 +76,7 @@ export const getErrorMessage = (error: any, config: IConfig, resource?: boolean)
   let data = getWrapper(config);
   data.detail = {};
   data.detail = {
-    ...error.detail
+    ...error.detail,
   }
   data.event_type = error.type;
 
@@ -85,7 +84,7 @@ export const getErrorMessage = (error: any, config: IConfig, resource?: boolean)
   if (error.type === "error" && !resource) {
     data.error = {};
     data.error = {
-      ...error.detail
+      ...error.detail,
     }
     data.error.stack = error.error?.stack;
     data.error.message = error.message;
@@ -98,7 +97,7 @@ export const getErrorMessage = (error: any, config: IConfig, resource?: boolean)
   if (error.type === "unhandledrejection") {
     data.error = {};
     data.error = {
-      ...error.detail
+      ...error.detail,
     }
     if (error?.reason) {
       data.error.message = JSON.stringify(error?.reason);
@@ -117,12 +116,12 @@ export const getErrorMessage = (error: any, config: IConfig, resource?: boolean)
   if (error.type === "fetchError" || error.type === "ajaxLoad" || error.type === "ajaxSlow") {
     data.ajax = {};
     data.ajax = {
-      ...error.detail
+      ...error.detail,
     }
     data.record = [];
   }
 
-  data.app_key = config.app_key
+  data.app_key = config.app_key;
 
   return data;
 };
@@ -141,15 +140,13 @@ export const getEventMessage = (type: string, eventData: any, config: IConfig) =
   if (type === 'uv' || type === 'pv') {
     data.view = {};
     data.view = {
-      ...eventData
+      ...eventData,
     }
   }
 
-  
-
   // ---- 自定义上报类型 ----
   data.detail = {
-    ...eventData
+    ...eventData,
   };
   data.event_type = type;
   data.app_key = config.app_key;
@@ -169,8 +166,7 @@ export const getClickMessage = (type: string, data: any, config: IConfig) => {
       event_type: type,
       app_key: config.app_key,
       ...wrap,
-    })
-    // return 
+    });
   });
   
   return {
@@ -191,4 +187,3 @@ export const reportResourceError = function (err: any, config: any) {
   let data = getErrorMessage(err, config, true);
   ajax(config.url, data);
 }
-

@@ -139,20 +139,21 @@ export const initListenFCP = (config: IConfig) => {
   config.observerData = observerData;
 
   const compare = (delayTime: any) => {
-    // 当前所开销的时间
+    // - 当前所开销的时间 - 
     const _time = Date.now() - config.startTime;
-    // 取最后一个元素时间 time
-    const time =
-      (
-        observerData &&
-        observerData.length &&
-        observerData[observerData.length - 1].time) ||
-      0;
+    
+    // - 取最后一个元素时间 time -
+    const time = (
+      observerData &&
+      observerData.length &&
+      observerData[observerData.length - 1].time
+    ) || 0;
+    
     return _time > delayTime || _time - time > 2 * 500;
   }
 
   if (document.readyState === 'complete') {
-    // MutationObserver 监听的最大时间 10 秒，超过 10 秒将强制结束
+    // - MutationObserver 监听的最大时间 10 秒，超过 10 秒将强制结束 -
     unmountObserver(10000);
   } else {
     window.addEventListener(
@@ -189,6 +190,7 @@ export const getPerformance = (config: IConfig) => {
 
   // --- performance.getEntriesByType - For resource loading time ---
   data.resourceLoading = [];
+
   // --- 是否开启资源上报监控 ---
   if (config.recordReSoure) {
     performance?.getEntriesByType('resource')?.forEach((item: any, index: number) => {
@@ -214,19 +216,25 @@ export const getPerformance = (config: IConfig) => {
        */
       if (item.initiatorType !== 'xmlhttprequest' && item.initiatorType !== 'fetch') {
         let loadTime = item.responseEnd?.toFixed(0) - item.responseStart?.toFixed(0);
+
         if (loadTime < (config.slowResourceCost || 0)) { return }
+        
         // --- 加载资源花费的时间 ---
-        value.loading = item.responseEnd?.toFixed(0) - item.responseStart?.toFixed(0) || undefined,
-          // --- startTime： 开始进入下载的时间 - responseStart 真正开始下载的时间 ---
-          value.prepareLoading = item.responseStart?.toFixed(0) - item.startTime?.toFixed(0) || undefined,
-          data.resourceLoading.push(value);
+        value.loading = item.responseEnd?.toFixed(0) - item.responseStart?.toFixed(0) || undefined;
+
+        // --- startTime： 开始进入下载的时间 - responseStart 真正开始下载的时间 ---
+        value.prepareLoading = item.responseStart?.toFixed(0) - item.startTime?.toFixed(0) || undefined;
+
+        data.resourceLoading.push(value);
       } else {
         let loadTime = item.responseEnd?.toFixed(0) - item.fetchStart?.toFixed(0);
+
         if (loadTime < (config.slowAjaxCost || 0)) { return }
+
         // --- 加载资源花费的时间 ---
         value.loading = item.responseEnd?.toFixed(0) - item.fetchStart?.toFixed(0) || undefined;
-        value.prepareLoading = 0,
-          data.resourceLoading.push(value);
+        value.prepareLoading = 0;
+        data.resourceLoading.push(value);
       }
     });
   }

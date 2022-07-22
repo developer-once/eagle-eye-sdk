@@ -41,7 +41,7 @@ export const initListenHash = (config: IConfig) => {
     }
   }
 
-  if('replaceState' in history) {
+  if ('replaceState' in history) {
     originalReplaceState =  history.replaceState
     history.replaceState = function(data, title, url) {
       originalReplaceState.apply(this, [data, title, url])

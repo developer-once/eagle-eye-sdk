@@ -5,6 +5,7 @@
  */
 import { IConfig } from './type/index';
 import { report } from './report/report';
+import { reportError } from './wrap';
 
 const eagle = function (config: IConfig) {
   return {
@@ -12,6 +13,7 @@ const eagle = function (config: IConfig) {
     // ---- 销毁监控 ----
     destory: function () {
       const array = this.config?.eventCenter?.get();
+
       for (let i = 0; i < array.length; i++) {
         // event type add different stage
         if (array[i].type === 'error') {
@@ -31,12 +33,16 @@ const eagle = function (config: IConfig) {
       return report(type, eventData, this.config);
     },
     // ---- 主动上报错误 ----
+    error: function (error: any) {
+      return reportError(error, this.config);
+    },
     // ---- 重新设置 Config ----
     setConfig: function () {},
     // ---- 计时开始 ----
     start: function () {
       this.config.beginTiming = new Date().getTime();
     },
+    // ---- 计时结束 ----
     stop: function () {
       // --- 只有开始计时的时候才算时间 ---
       if (this.config.beginTiming) {

@@ -8,8 +8,8 @@ import { IUserConfig, IConfig, IUserIncoming } from './type/index';
 function newConfig(conf: IUserConfig): IConfig {
   let config = {
     https: true,
-    url: "https://dev-one.cn/api/report",
-    config: "https://dev-one.cn/api/get/config",
+    url: "https://eagle.dev-one.cn/api/report",
+    config: "https://eagle.dev-one.cn/api/get/config",
     app_key: "",
     resourceUrl: [],
     resourceIndex: -1,

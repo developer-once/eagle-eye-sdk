@@ -28,14 +28,20 @@ const initUserConfig = (userConfig: IUserConfig): IConfig => {
   // --- 监听 Dom 变化 ---
   initListenFCP(config);
 
+  // --- 监听 JS 报错 ---
+  initListenGlobalJsError(config);
+  initListenPromise(config);
+
+  // --- 获取 appk_key 配置 ---
+  ajax(config.config, {});
+
+  // --- 离开页面之前发送请求 ----
+  sendBeaconBeforeLeave(config);
+
   // --- 监听 HashRouter 变化 ---
   if (config.enableSPA) {
     initListenHash(config);
   }
-
-  // --- 监听 JS 报错 ---
-  initListenGlobalJsError(config);
-  initListenPromise(config);
 
   // --- 监听 AJAX ---
   if (!config.disableAjax) {
@@ -72,12 +78,6 @@ const initUserConfig = (userConfig: IUserConfig): IConfig => {
       checkoutEveryNms: 5 * 1000,
     });
   }
-
-  // --- 获取 appk_key 配置 ---
-  ajax(config.config, {});
-
-  // --- 离开页面之前发送请求 ----
-  sendBeaconBeforeLeave(config);
 
   return config;
 };
