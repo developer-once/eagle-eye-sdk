@@ -9,20 +9,24 @@ Eagle-eye 是一款全埋点的监控 SDK，只需简单的引入和传入配置
 
 ```js
 // 下载 SDK
-npm install eagle-eye-sdk -S
+npm i @developer-ones/eagle-eye-sdk -S
 
 // app.ts
-import { initMonitor } from 'eagle-eye-sdk';
+import initMonitor from 'eagle-eye-sdk';
 const monitor = initMonitor({
-  url: "/api/report",
   globalClick: true,
-  // 以下两项为必填
+  // - 以下项为必填 -
   app_key: "vite_test",
-  startTime: new Date().getTime()
-})
+});
 
-// 销毁
-// monitor.destory()
+// -- 销毁 --
+// monitor.destory();
+
+// -- 上报 --
+// monitor.report("type", data);
+
+// -- 自定义错误上报 --
+// monitor.error(error);
 
 function App() {}
 export default App
@@ -65,7 +69,6 @@ export default App
 |  disableFetch     |  boolean   |      |  是否禁止监听 fetch                                                    |  false                 |    |
 |  openHeartbeat    |  boolean   |      |  是否开启心跳检测                                                       |  false                 |    |
 |  serverOpenRecord |  boolean   |      |  服务端开启报错回放录制，注意请不要配置该字段，应在后台设置                    |  false                 |    |
-
 
 
 ## 开发
