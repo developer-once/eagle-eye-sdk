@@ -14,13 +14,13 @@ const eventCenter = function (): IEventCenter {
     data: [],
     // -- rrweb --
     record: [ [], [] ],
-    get: function () {
+    get() {
       return this.data
     },
-    set: function(event: any) {
+    set(event: any) {
       this.data.push(event);
     },
-    setEvent: function (event: any, config: IConfig) {
+    setEvent(event: any, config: IConfig) {
       this.event.push(event);
 
       // ----- 条数大于预设值时发送事件 -----
@@ -29,22 +29,22 @@ const eventCenter = function (): IEventCenter {
         this.reportEvent(config);
       }
     },
-    reportEvent: function (config: IConfig) {
+    reportEvent(config: IConfig) {
       report("click", this.event, config);
       
       this.data.splice(0, this.data?.length);
       this.sending = false;
     },
-    getRecord: function () {
+    getRecord() {
       const length = this.record.length;
       const events = this.record[length - 2].concat(this.record[length - 1]);
       return events;
     },
-    setRecord: function (event: any) {
+    setRecord(event: any) {
       const lastEvents = this.record[this.record.length - 1];
       lastEvents.push(event);
     },
-    setCheckout: function () {
+    setCheckout() {
       this.record.push([]);
     },
     clearRecord() {

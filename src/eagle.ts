@@ -11,7 +11,7 @@ const eagle = function (config: IConfig) {
   return {
     config: config,
     // ---- 销毁监控 ----
-    destory: function () {
+    destory() {
       const array = this.config?.eventCenter?.get();
 
       for (let i = 0; i < array.length; i++) {
@@ -24,26 +24,26 @@ const eagle = function (config: IConfig) {
       }
     },
     // ---- 获取监控数据 ----
-    getRecord: function () {
+    getRecord() {
       const array = this.config?.eventCenter?.getRecord();
       return array;
     },
     // ---- 主动上报 ----
-    report: function (type: string, eventData: any = {}) {
+    report(type: string, eventData: any = {}) {
       return report(type, eventData, this.config);
     },
     // ---- 主动上报错误 ----
-    error: function (error: any) {
+    error(error: any) {
       return reportError(error, this.config);
     },
     // ---- 重新设置 Config ----
-    setConfig: function () {},
+    setConfig() {},
     // ---- 计时开始 ----
-    start: function () {
+    start() {
       this.config.beginTiming = new Date().getTime();
     },
     // ---- 计时结束 ----
-    stop: function () {
+    stop() {
       // --- 只有开始计时的时候才算时间 ---
       if (this.config.beginTiming) {
         this.config.costTime = new Date().getTime() - this.config.beginTiming;
