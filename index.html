@@ -95,13 +95,11 @@
   <script src="./createError.js"></script>
   <script>
     var config = {
-      // name: 'test',
-      https: false,
-      // url: "http://172.18.153.86:7001/report",
-      // url: "http://localhost:7001/api/report",
+      url: 'http://localhost:7001/api/report',
+      config: 'http://localhost:7001/api/get/config',
+      https: true,
       record: true,
-      // app_key: "830c4b26ab494a9f9231c3",
-      app_key: "9d06074b874799a24d052e",
+      app_key: "a0ab334b0f4e9ee45eca86",
       autoSendPv: true,
       recordReSoure: false,
       startTime: new Date().getTime(),
@@ -111,7 +109,7 @@
       behaviorMax: 5,
     };
 
-    window.monitor = eagleEye.initMonitor(config);
+    window.monitor = eagleEye(config);
 
     window.onerror = function(err, detail) {
       // console.log(111);

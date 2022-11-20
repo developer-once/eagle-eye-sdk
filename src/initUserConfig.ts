@@ -33,7 +33,7 @@ const initUserConfig = (userConfig: IUserConfig): IConfig => {
   initListenPromise(config);
 
   // --- 获取 appk_key 配置 ---
-  ajax(config.config, {});
+  ajax(config.config, { app_key: config.app_key });
 
   // --- 离开页面之前发送请求 ----
   sendBeaconBeforeLeave(config);
